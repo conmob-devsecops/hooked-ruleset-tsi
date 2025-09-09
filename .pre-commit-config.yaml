@@ -1,0 +1,13 @@
+repos:
+  - repo: https://github.com/conmob-devsecops/pre-commit-hooks/
+    rev: feature/initial-setup
+    hooks:
+      - id: check-git-user-email
+        args:
+          [
+            "--allowed-domains",
+            "telekom.de",
+            "t-systems.com",
+            "external.telekom.de",
+            "external.t-systems.com",
+          ]
