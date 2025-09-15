@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/conmob-devsecops/pre-commit-hooks/
-    rev: feature/initial-setup
+    rev: v1.0.0
     hooks:
       - id: check-git-user-email
         args:
