@@ -1,0 +1,17 @@
+repos:
+  - repo: https://github.com/conmob-devsecops/pre-commit-hooks/
+    rev: v1.0.0
+    hooks:
+      - id: check-git-user-email
+        args:
+          [
+            "--allowed-domains",
+            "telekom.de",
+            "t-systems.com",
+            "external.telekom.de",
+            "external.t-systems.com",
+          ]
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
