@@ -1,0 +1,45 @@
+title = "TSI hooked gitleaks ruleset"
+
+# TODO: needs to be vetted
+
+redact = true
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+  description = "Global allowlist for known safe files/paths/patterns"
+  # Ignore typical test fixtures, examples, and lockfiles that often look secret-y
+  files = [
+    '''(?i)^(|.*/)(README|CHANGELOG|LICENSE)(\.md)?$''',
+    '''(?i)^.*/?(tests?|fixtures?|samples?|examples?)/.*$''',
+    '''(?i)^package-lock\.json$''',
+    '''(?i)^yarn\.lock$''',
+    '''(?i)^\.git/yarn\.lock$''',
+    '''(?i)^\.git[\\/]+hooks[\\/]+.*$'''
+  ]
+
+  paths = [
+    '''(?i)^.*/?\.git/.*$''',
+    '''(?i)^.*/?\.svn/.*$''',
+    '''(?i)^.*/?\.hg/.*$''',
+    '''(?i)^.*/?node_modules/.*$''',
+    '''(?i)^.*/?\.idea/.*$''',
+    '''(?i)^.*/?\.vscode/.*$''',
+    '''(?i)^.*/?__pycache__/.*$''',
+    '''(?i)^.*/?\$tf\.state(\.backup)?$''',
+    '''(?i)^.*/?\.terraform/.*$'''
+  ]
+
+  # Ignore obvious false-positive patterns (UUIDs, hex blobs used in tests, etc.)
+  regexes = [
+    '''(?i)example(_|-)secret''',
+    '''(?i)dummy(_|-)token''',
+    '''\b[0-9a-f]{32}\b''',
+  ]
+
+[[rules]]
+id = "employee-id-local-login"
+description = "Employee ID (A/a + 9 digits)"
+regex = '''\b[Aa]\d{9}\b'''
+tags = ["custom", "pii", "employee-id"]

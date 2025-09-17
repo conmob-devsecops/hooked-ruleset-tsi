@@ -19,3 +19,10 @@ Only allow commits, if git user email is using a domain included in the allowed 
 ### trailing-whitespace
 
 Trims trailing whitespace, see [trailing-whitespace](https://github.com/pre-commit/pre-commit-hooks?tab=readme-ov-file#trailing-whitespace)
+
+### gitleaks-staged
+
+Runs local gitleaks scan on staged changes only, see [gitleaks](https://github.com/gitleaks/gitleaks) for more information
+and how to install. Pre-build binaries are available on the [releases page](https://github.com/gitleaks/gitleaks/releases).
+
+**Note:** You need to have `gitleaks` installed and available in your PATH for this hook to work.
