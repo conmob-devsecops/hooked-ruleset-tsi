@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/conmob-devsecops/pre-commit-hooks/
-    rev: v1.0.0
+    rev: v1.1.0
     hooks:
       - id: check-git-user-email
         args:
@@ -11,6 +11,8 @@ repos:
             "external.telekom.de",
             "external.t-systems.com",
           ]
+      - id: check-prohibited-filenames
+        args: [ "--prohibited-filenames", "node_modules",  ".DS_Store" ]
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
