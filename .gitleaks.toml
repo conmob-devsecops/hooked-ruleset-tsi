@@ -1,0 +1,103 @@
+title = "TSI hooked gitleaks ruleset"
+
+# TODO: needs to be vetted
+
+redact = true
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+  description = "Global allowlist for known safe files/paths/patterns"
+  # Ignore typical test fixtures, examples, and lockfiles that often look secret-y
+  files = [
+    '''(?i)^(|.*/)(README|CHANGELOG|LICENSE)(\.md)?$''',
+    '''(?i)^.*/?(tests?|fixtures?|samples?|examples?)/.*$''',
+    '''(?i)^package-lock\.json$''',
+    '''(?i)^yarn\.lock$''',
+    '''(?i)^\.git/yarn\.lock$''',
+    '''(?i)^\.git[\\/]+hooks[\\/]+.*$'''
+  ]
+
+  paths = [
+    '''(?i)^.*/?\.git/.*$''',
+    '''(?i)^.*/?\.svn/.*$''',
+    '''(?i)^.*/?\.hg/.*$''',
+    '''(?i)^.*/?node_modules/.*$''',
+    '''(?i)^.*/?\.idea/.*$''',
+    '''(?i)^.*/?\.vscode/.*$''',
+    '''(?i)^.*/?__pycache__/.*$''',
+    '''(?i)^.*/?\$tf\.state(\.backup)?$''',
+    '''(?i)^.*/?\.terraform/.*$'''
+  ]
+
+  # Ignore obvious false-positive patterns (UUIDs, hex blobs used in tests, etc.)
+  regexes = [
+    '''(?i)example(_|-)secret''',
+    '''(?i)dummy(_|-)token''',
+    '''\b[0-9a-f]{32}\b''',
+  ]
+
+[[rules]]
+id = "employee-id-local-login"
+description = "Employee ID (A/a + 9 digits)"
+regex = '''\b[Aa]\d{9}\b'''
+tags = ["custom", "pii", "employee-id"]
+
+# Additional rules from https://github.com/shafnir/Gitleaks/tree/main
+
+[[rules]]
+id = "generic-password"
+description = "Generic password assignments (password, pass, passwd, passphrase)"
+regex = '''(?i)\b(pass(word|phrase)?|passwd)\b\s*[:=]\s*["']?[a-z0-9!@#$%^&*()_+={}\[\]:;<>,.?\/\\|~-]{6,}["']?'''
+secretGroup = 0
+tags = ["password"]
+
+[[rules]]
+id = "env-password"
+description = "Environment variable style secrets (UPPERCASE-like vars)"
+regex = '''\b([A-Z0-9_]+_?(PASS|PASSWORD|SECRET|TOKEN)[A-Z0-9_]*)\b\s*[:=]\s*["']?[A-Za-z0-9!@#$%^&*()_+={}\[\]:;<>,.?\/\\|~-]{6,}["']?'''
+secretGroup = 0
+tags = ["env", "password", "token"]
+
+[[rules]]
+id = "db-password"
+description = "Database-specific password or secret values"
+regex = '''(?i)\b(db[_\-]?(pass(word)?|passwd|secret))\b\s*[:=]\s*["']?[a-z0-9!@#$%^&*()_+={}\[\]:;<>,.?\/\\|~-]{6,}["']?'''
+secretGroup = 0
+tags = ["database", "password"]
+
+[[rules]]
+id = "generic-api-key"
+description = "Generic API key assignments (api_key, access_key, key)"
+regex = '''(?i)\b(api[_\-]?key|access[_\-]?key|key)\b\s*[:=]\s*["']?[a-zA-Z0-9_\-]{12,}["']?'''
+secretGroup = 0
+tags = ["apikey"]
+
+[[rules]]
+id = "generic-secret"
+description = "General-purpose secret or private key assignments"
+regex = '''(?i)\b(secret|sec[_\-]?key|client[_\-]?secret|private[_\-]?key)\b\s*[:=]\s*["']?[a-z0-9!@#$%^&*()_+={}\[\]:;<>,.?\/\\|~-]{8,}["']?'''
+secretGroup = 0
+tags = ["secret"]
+
+[[rules]]
+id = "generic-token"
+description = "Access/session/bearer tokens with long values"
+regex = '''(?i)\b(token|auth[_\-]?token|bearer[_\-]?token|session[_\-]?token|access[_\-]?token)\b\s*[:=]\s*["']?[a-z0-9\-_\.]{16,}["']?'''
+secretGroup = 0
+tags = ["token"]
+
+[[rules]]
+id = "jwt-token"
+description = "JWT token format (header.payload.signature)"
+regex = '''eyJ[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+'''
+secretGroup = 0
+tags = ["jwt", "token"]
+
+[[rules]]
+id = "generic-auth"
+description = "Generic credential assignments like auth, login, cred"
+regex = '''(?i)\b(auth|login|cred|credentials)\b\s*[:=]\s*["']?[a-zA-Z0-9!@#$%^&*()_+]{6,}["']?'''
+secretGroup = 0
+tags = ["auth", "credentials"]
