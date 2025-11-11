@@ -1,48 +1,67 @@
-# hooked-ruleset-tsi
+# Hooked Rules for TSI
 
-This repository containts configurations to be used with the [hooked](https://github.com/conmob-devsecops/hooked) tool.
+This rule-set for [hooked](https://github.com/conmob-devsecops/hooked)
+contains a curated set of hooks specifically for TSI.
 
-## Installation
-
-Point `hooked` to this repository, for example:
+## 📦 Installation
 
 ```bash
-hooked install git@github.com:conmob-devsecops/hooked-ruleset-tsi.git
+hooked install https://github.com/conmob-devsecops/hooked-ruleset-tsi.git
 ```
 
-## Hooks
+⚠️ Beside `hooked` you need to have [Gitleaks](https://github.com/gitleaks/gitleaks)
+installed and available in your PATH for this rule-set to work. Pre-build binaries
+of gitleaks are available on the [releases page](https://github.com/gitleaks/gitleaks/releases).
 
-### check-git-user-email
+## Usage
 
-Only allow commits, if git user email is using a domain included in the allowed set of domains.
+This rule-set contains an opinionated gitleaks configuration, that may affect
+your ability to commit. Therefore,
 
-### check-prohibited-filenames
+### ✅ Allowed
 
-Disallow certain filenames, similar to .gitignore patterns.
+Secrets in the following folders and files are allowed. Here you can place contributions
+without risking false positives from gitleaks scans.
 
-### trailing-whitespace
+- `docs/*`
+- `contrib/*`
+- `examples/*`, `tests/*`, `fixtures/*`, `samples/*`
+- `README.md`
 
-Trims trailing whitespace, see [trailing-whitespace](https://github.com/pre-commit/pre-commit-hooks?tab=readme-ov-file#trailing-whitespace)
+### ⛔️ Denied
 
-### gitleaks-staged
+- Common files in software development, that contain secrets (e.g., `.env`, `.env.local`)
+- Files, that should never be part of a commit (e.g., `.DS_Store`, `Thumbs.db`)
+- Employee ID (so called "A-Kennung")
+- Commit author email addresses other than `t-systems.com` or `telekom.de`
+  (including externals)
+- **Secrets!** 🔥
 
-Runs local gitleaks scan on staged changes only, see [gitleaks](https://github.com/gitleaks/gitleaks) for more information
-and how to install. Pre-build binaries are available on the [releases page](https://github.com/gitleaks/gitleaks/releases).
+### 📌 False Positive Handling
 
-**Note:** You need to have `gitleaks` installed and available in your PATH for this hook to work.
+False positives might occur when gitleaks erroneously detects a secret as a
+potential leak. To ignore a false positive using inline comments, follow these
+steps:
 
-#### Gitleaks configuration
+- Identify the specific line of code that is generating the false positive.
+- Place an inline comment on the same line as the false positive. The comment
+  must start with `gitleaks:allow`
+- Add a reason for the ignore, for example, `gitleaks:allow: this is a test
+secret`
+- Commit the changes and push them to the repository.
+- Gitleaks will now ignore the false positive and not flag it as a potential
+  leak.
 
-The gitleaks configuration file `.gitleaks.toml` is included in this repository. It extends the default gitleaks ruleset
-with some additional rules and exclusions.
+## Available Hooks
 
-Excluded paths:
+| Hook                         | Description                                                 |
+| ---------------------------- | ----------------------------------------------------------- |
+| `gitleaks-staged`            | Runs local gitleaks on staged changes                       |
+| `check-git-user-email`       | Disallows git author emails other than from allowed domains |
+| `check-prohibited-filenames` | Disallow certain filenames, similar to .gitignore patterns. |
 
-- /docs/
-- /contrib/
-- /examples/
+## Issues
 
-Here you can store documentation, example code and community contributions without risking false positives from
-gitleaks scans.
-
-Also excluded are auto-generated files of commonly used package managers for various programming languages.
+If you face any issues when using this rule-set in your daily job, we'd like to
+hear from! You may start an issue in this repository or write us an email at
+[devsecops@t-systems.com](mailto:devsecops@t-systems.com).

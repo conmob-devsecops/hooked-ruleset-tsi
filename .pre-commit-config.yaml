@@ -4,19 +4,25 @@ repos:
     hooks:
       - id: check-git-user-email
         args:
-          [
-            "--allowed-domains",
-            "telekom.de",
-            "t-systems.com",
-            "external.telekom.de",
-            "external.t-systems.com",
-          ]
+          - --allowed-domains
+          - telekom.de
+          - t-systems.com
+          - external.telekom.de
+          - external.t-systems.com
       - id: check-prohibited-filenames
-        args: [ "--prohibited-filenames", "node_modules",  ".DS_Store" ]
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
-    hooks:
-      - id: trailing-whitespace
+        args:
+          - --prohibited-filenames
+          - node_modules
+          - .DS_Store
+          - Thumbs.db
+          - .env
+          - .env.vault
+          - .env.local
+          - terraform.tfstate
+          - .kubeconfig
+          - .pypirc
+          - .npmrc
+          - .pgpass
   - repo: local
     hooks:
       - id: gitleaks-staged
