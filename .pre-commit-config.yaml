@@ -6,8 +6,10 @@ repos:
         args:
           - --allowed-domains
           - telekom.de
+          - telekom.com
           - t-systems.com
           - external.telekom.de
+          - external.telekom.com
           - external.t-systems.com
       - id: check-prohibited-filenames
         args:
