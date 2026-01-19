@@ -62,21 +62,21 @@ tags = ["custom", "pii", "employee-id"]
 id = "generic-password"
 description = "Generic password assignments (password, pass, passwd, passphrase)"
 regex = '''(?i)\b(pass(word|phrase)?|passwd)\b\s*[:=]\s*(["']?[a-z0-9!@#$%^&*()_+={}\[\]:;<>,.?\/\\|~-]{6,}["']?)'''
-secretGroup = 2
+secretGroup = 3
 tags = ["password"]
 
 [[rules]]
 id = "env-password"
 description = "Environment variable style secrets (UPPERCASE-like vars)"
 regex = '''\b([A-Z0-9_]+_?(PASS|PASSWORD|SECRET|TOKEN)[A-Z0-9_]*)\b\s*[:=]\s*(["']?[A-Za-z0-9!@#$%^&*()_+={}\[\]:;<>,.?\/\\|~-]{6,}["']?)'''
-secretGroup = 2
+secretGroup = 3
 tags = ["env", "password", "token"]
 
 [[rules]]
 id = "db-password"
 description = "Database-specific password or secret values"
 regex = '''(?i)\b(db[_\-]?(pass(word)?|passwd|secret))\b\s*[:=]\s*(["']?[a-z0-9!@#$%^&*()_+={}\[\]:;<>,.?\/\\|~-]{6,}["']?)'''
-secretGroup = 2
+secretGroup = 4
 tags = ["database", "password"]
 
 [[rules]]
