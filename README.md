@@ -32,6 +32,8 @@ without risking false positives from gitleaks scans.
 
 - Common files in software development, that contain secrets (e.g., `.env`, `.env.local`)
 - Files, that should never be part of a commit (e.g., `.DS_Store`, `Thumbs.db`)
+- Files, that configure AI agents and their hooks (e.g., Claude, Codex, Copilot,
+  Opencode)
 - Employee ID (so called "A-Kennung")
 - Commit author email addresses other than `t-systems.com` or `telekom.de`
   (including externals)

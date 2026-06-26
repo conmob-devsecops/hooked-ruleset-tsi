@@ -25,6 +25,22 @@ repos:
           - .pypirc
           - .npmrc
           - .pgpass
+          - .claude/settings.json
+          - .claude/settings.local.json
+          - .claude/hooks
+          - .cursor/mcp.json
+          - .cursor/tasks.json
+          - .gemini/settings.json
+          - .vscode/tasks.json
+          - .codex/config.json
+          - .codex/hooks
+          - .github/copilot/config.json
+          - .github/copilot/hooks
+          - .copilot/hooks
+          - .copilot/settings.json
+          - opencode.json
+          - tui.json
+          - .opencode/plugins
   - repo: local
     hooks:
       - id: gitleaks-staged
